@@ -10,12 +10,14 @@ public class BallLauncher : MonoBehaviour
     void Start()
     {
         ballRB = GetComponent<Rigidbody>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isLaunched)
+        
+        if (Input.GetKeyUp(KeyCode.Return) && !isLaunched)
         {
             ballRB.AddForce(transform.forward * force, ForceMode.Impulse);
             isLaunched = true;
