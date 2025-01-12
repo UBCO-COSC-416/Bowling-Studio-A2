@@ -7,7 +7,8 @@ public class BallLauncher : MonoBehaviour
     
     [SerializeField] private float force;
     [SerializeField] private Transform ballAnchor;
-
+    [SerializeField] private Transform launchIndicator;
+    
     private BallState ballState = BallState.NotLaunched;
     private Rigidbody ballRB;
     private Transform gutter;
@@ -33,7 +34,8 @@ public class BallLauncher : MonoBehaviour
                 break;
             case BallState.OnLaunch:
                 ballRB.isKinematic = false;
-                ballRB.AddForce(transform.forward * force, ForceMode.Impulse);
+                ballRB.AddForce(launchIndicator.forward * force, ForceMode.Impulse);
+                launchIndicator.gameObject.SetActive(false);
                 ballState = BallState.Launched;
                 break;
             case BallState.Launched:
@@ -51,6 +53,8 @@ public class BallLauncher : MonoBehaviour
     }
     public void OnBallGuttered(Transform T)
     {
+        if(ballState == BallState.NotLaunched)
+            return;
         gutter = T;
         ballState = BallState.Gutter;
     }
