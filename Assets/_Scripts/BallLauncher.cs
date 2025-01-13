@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody),typeof(InputManager))]
 public class BallLauncher : MonoBehaviour
 {
+    public UnityEvent OnBallGuttered = new();
+    
     [SerializeField] private float force;
     [SerializeField] private Transform ballAnchor;
     [SerializeField] private Transform launchIndicator;
@@ -55,12 +58,15 @@ public class BallLauncher : MonoBehaviour
         launchIndicator.gameObject.SetActive(true);
     }
     
-    public void OnBallGuttered(Transform T)
+    public void BallGuttered(Transform T)
     {
-        if(ballState == BallState.NotLaunched)
-            return;
+        if (ballState == BallState.NotLaunched)
+        {
+            return;  
+        }
         gutter = T;
         ballState = BallState.Gutter;
+        OnBallGuttered?.Invoke();
     }
 
     private void OnBallLaunched()

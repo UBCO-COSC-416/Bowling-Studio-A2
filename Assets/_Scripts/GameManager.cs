@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         SpawnPins();
-        ball  = FindAnyObjectByType<BallLauncher>();
+        ball = FindAnyObjectByType<BallLauncher>();
+        ball.OnBallGuttered.AddListener(HandleReset);
     }
 
     private void SpawnPins()
@@ -74,5 +75,6 @@ public class GameManager : MonoBehaviour
             pin.OnPinFall.RemoveListener(IncrementScore);
             pin.OnPinFall.RemoveListener(HandleReset);
         }
+        ball.OnBallGuttered.RemoveListener(HandleReset);
     }
 }

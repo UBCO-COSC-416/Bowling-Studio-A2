@@ -7,7 +7,7 @@ public class Gutter : MonoBehaviour
         if (other.CompareTag("Ball"))
         {
             BallLauncher ball = other.GetComponent<BallLauncher>();
-            ball.OnBallGuttered(transform);
+            ball.BallGuttered(transform);
         }
     }
 }
