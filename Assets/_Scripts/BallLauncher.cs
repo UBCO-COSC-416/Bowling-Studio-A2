@@ -19,8 +19,15 @@ public class BallLauncher : MonoBehaviour
     {
         ballRB = GetComponent<Rigidbody>();
         inputManager = GetComponent<InputManager>();
-        inputManager.OnSpacePressed.AddListener(OnBallLaunched);
         Cursor.lockState = CursorLockMode.Locked;
+        ResetBall();
+    }
+
+    public void ResetBall()
+    {
+        inputManager.OnSpacePressed.AddListener(OnBallLaunched);
+        ballState = BallState.NotLaunched;
+        launchIndicator.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
