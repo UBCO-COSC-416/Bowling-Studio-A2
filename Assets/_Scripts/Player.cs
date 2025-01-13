@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
         inputManager = GetComponent<InputManager>();
         inputManager.OnMove.AddListener(OnMove);
     }
-    
     private void OnMove(Vector2 direction)
     {
         if (direction == Vector2.right)
