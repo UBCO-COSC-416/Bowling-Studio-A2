@@ -36,9 +36,9 @@ public class BallLauncher : MonoBehaviour
                 ballRB.isKinematic = false;
                 ballRB.AddForce(launchIndicator.forward * force, ForceMode.Impulse);
                 launchIndicator.gameObject.SetActive(false);
-                ballState = BallState.Launched;
+                ballState = BallState.Idle;
                 break;
-            case BallState.Launched:
+            case BallState.Idle:
                 // Do Nothing
                 break;
             case BallState.Gutter:
@@ -46,7 +46,7 @@ public class BallLauncher : MonoBehaviour
                 ballRB.linearVelocity = Vector3.zero;
                 ballRB.angularVelocity = Vector3.zero;
                 ballRB.AddForce(gutter.transform.forward * velocityMagnitude, ForceMode.VelocityChange);
-                ballState = BallState.Launched;
+                ballState = BallState.Idle;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -72,6 +72,6 @@ public enum BallState
     INVALID = -1,
     NotLaunched = 0,
     OnLaunch = 1,
-    Launched = 2,
+    Idle = 2,
     Gutter = 3
 }
