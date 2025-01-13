@@ -27,12 +27,4 @@ public class Player : MonoBehaviour
         lerpParameter = Mathf.Clamp(lerpParameter, 0, 1);
         transform.position = Vector3.Lerp(anchor1.position, anchor2.position, lerpParameter);
     }
-
-    private void Update()
-    {
-        
-        
-    }
-
-    
 }

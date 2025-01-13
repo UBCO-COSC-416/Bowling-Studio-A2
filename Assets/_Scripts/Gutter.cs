@@ -9,7 +9,6 @@ public class Gutter : MonoBehaviour
         {
             BallLauncher ball = other.GetComponent<BallLauncher>();
             ball.OnBallGuttered(transform);
-            
         }
     }
 }

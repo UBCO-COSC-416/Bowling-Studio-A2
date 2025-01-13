@@ -39,6 +39,7 @@ public class BallLauncher : MonoBehaviour
                 ballState = BallState.Launched;
                 break;
             case BallState.Launched:
+                // Do Nothing
                 break;
             case BallState.Gutter:
                 float velocityMagnitude = ballRB.linearVelocity.magnitude;
