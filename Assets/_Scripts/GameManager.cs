@@ -31,30 +31,29 @@ public class GameManager : MonoBehaviour
         foreach (FallTrigger pin in fallTriggers)
         {
             pin.OnPinFall.AddListener(IncrementScore);
+            pin.OnPinFall.AddListener(HandleReset);
         }  
     }
 
     private void IncrementScore()
     {
-        if (resetRoutine != null)
-        {
-            Debug.Log("Stopping");
-            StopCoroutine(resetRoutine);
-        }
         score++;
-        UpdateScore();
-        isTimeToReset = false;
-        resetRoutine = StartCoroutine(ResetCooldown());
+        scoreText.text = $"Score: {score}";
     }
 
+    private void HandleReset()
+    {
+        if (resetRoutine != null)
+        {
+            StopCoroutine(resetRoutine);
+        }
+        resetRoutine = StartCoroutine(ResetCooldown());
+    }
+    
     private IEnumerator ResetCooldown()
     {
-        isTimeToReset = true;
         yield return new WaitForSeconds(resetCooldown);
-        if (isTimeToReset)
-        {
-            ResetLevel();
-        }
+        ResetLevel();
     }
 
     private void ResetLevel()
@@ -67,17 +66,13 @@ public class GameManager : MonoBehaviour
         ball.ResetBall();
         SpawnPins();
     }
-
-    private void UpdateScore()
-    {
-        scoreText.text = $"Score: {score}";
-    }
-
+    
     private void OnDestroy()
     {
         foreach (FallTrigger pin in fallTriggers)
         {
             pin.OnPinFall.RemoveListener(IncrementScore);
+            pin.OnPinFall.RemoveListener(HandleReset);
         }
     }
 }

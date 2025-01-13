@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody),typeof(InputManager))]
 public class BallLauncher : MonoBehaviour
 {
-    
     [SerializeField] private float force;
     [SerializeField] private Transform ballAnchor;
     [SerializeField] private Transform launchIndicator;
@@ -13,8 +12,6 @@ public class BallLauncher : MonoBehaviour
     private Rigidbody ballRB;
     private Transform gutter;
     private InputManager inputManager;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         ballRB = GetComponent<Rigidbody>();
@@ -22,15 +19,6 @@ public class BallLauncher : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         ResetBall();
     }
-
-    public void ResetBall()
-    {
-        inputManager.OnSpacePressed.AddListener(OnBallLaunched);
-        ballState = BallState.NotLaunched;
-        launchIndicator.gameObject.SetActive(true);
-    }
-
-    // Update is called once per frame
     void Update()
     {
         switch (ballState)
@@ -59,6 +47,14 @@ public class BallLauncher : MonoBehaviour
                 throw new ArgumentOutOfRangeException();
         }
     }
+    
+    public void ResetBall()
+    {
+        inputManager.OnSpacePressed.AddListener(OnBallLaunched);
+        ballState = BallState.NotLaunched;
+        launchIndicator.gameObject.SetActive(true);
+    }
+    
     public void OnBallGuttered(Transform T)
     {
         if(ballState == BallState.NotLaunched)
@@ -72,6 +68,7 @@ public class BallLauncher : MonoBehaviour
         ballState = BallState.OnLaunch;
         inputManager.OnSpacePressed.RemoveListener(OnBallLaunched);
     }
+    
 }
 
 public enum BallState
