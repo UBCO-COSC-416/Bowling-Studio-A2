@@ -10,15 +10,12 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnSpacePressed?.Invoke();
+        }
+
         Vector2 input = Vector2.zero;
-        if (Input.GetKey(KeyCode.W))
-        {
-            input += Vector2.up;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            input += Vector2.down;
-        }
         if (Input.GetKey(KeyCode.A))
         {
             input += Vector2.left;
@@ -28,11 +25,6 @@ public class InputManager : MonoBehaviour
             input += Vector2.right;
         }
         OnMove?.Invoke(input);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            OnSpacePressed?.Invoke();
-        }
 
         if (Input.GetKeyDown(KeyCode.R))
         {

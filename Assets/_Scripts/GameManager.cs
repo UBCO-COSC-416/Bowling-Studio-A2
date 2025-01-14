@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         inputManager.OnResetPressed.AddListener(HandleReset);
-        ResetPins();
+        SetPins();
     }
 
     private void OnDisable()
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ResetPins()
+    private void SetPins()
     {
         pinObjects = Instantiate(pinCollection, pinAnchor.transform.position, Quaternion.identity, transform);
         fallTriggers = FindObjectsByType<FallTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -68,6 +68,6 @@ public class GameManager : MonoBehaviour
             Destroy(pinObjects);
         }
         ball.ResetBall();
-        ResetPins();
+        SetPins();
     }
 }
