@@ -1,14 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(InputManager))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private Transform anchor1, anchor2;
-    private InputManager inputManager;
+    [SerializeField] private InputManager inputManager;
+
     private float lerpParameter = 0.5f;
+
     private void Awake()
     {
-        inputManager = GetComponent<InputManager>();
         inputManager.OnMove.AddListener(OnMove);
     }
     private void OnMove(Vector2 direction)

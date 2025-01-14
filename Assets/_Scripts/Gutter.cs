@@ -6,8 +6,12 @@ public class Gutter : MonoBehaviour
     {
         if (other.CompareTag("Ball"))
         {
-            BallLauncher ball = other.GetComponent<BallLauncher>();
-            ball.BallGuttered(transform);
+            BallController ball = other.GetComponent<BallController>();
+            Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+            float velocityMagnitude = ballRB.linearVelocity.magnitude;
+            ballRB.linearVelocity = Vector3.zero;
+            ballRB.angularVelocity = Vector3.zero;
+            ballRB.AddForce(transform.forward * velocityMagnitude, ForceMode.VelocityChange);
         }
     }
 }

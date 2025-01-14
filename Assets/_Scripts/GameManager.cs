@@ -1,39 +1,53 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(InputManager))]
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private float resetCooldown;
-    [SerializeField] private BallLauncher ball;
+    [SerializeField] private BallController ball;
     [Header("Score Fields")]
     [SerializeField] private float score = 0;
     [SerializeField] private TextMeshProUGUI scoreText;
 
-    [Header("Pin Fields")] 
+    [Header("Pin Fields")]
     [SerializeField] private GameObject pinCollection;
     [SerializeField] private Transform pinAnchor;
-    
+
     private FallTrigger[] fallTriggers;
     private GameObject pinObjects;
-    private bool isTimeToReset;
-    private Coroutine resetRoutine;
+    private InputManager inputManager;
+
     private void Awake()
     {
-        SpawnPins();
-        ball = FindAnyObjectByType<BallLauncher>();
-        ball.OnBallGuttered.AddListener(HandleReset);
+        ball = FindAnyObjectByType<BallController>();
+        inputManager = GetComponent<InputManager>();
     }
 
-    private void SpawnPins()
+    private void OnEnable()
+    {
+        inputManager.OnResetPressed.AddListener(HandleReset);
+        ResetPins();
+    }
+
+    private void OnDisable()
+    {
+        inputManager.OnResetPressed.RemoveListener(HandleReset);
+        foreach (FallTrigger pin in fallTriggers)
+        {
+            pin.OnPinFall.RemoveListener(IncrementScore);
+        }
+    }
+
+    private void ResetPins()
     {
         pinObjects = Instantiate(pinCollection, pinAnchor.transform.position, Quaternion.identity, transform);
         fallTriggers = FindObjectsByType<FallTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (FallTrigger pin in fallTriggers)
         {
             pin.OnPinFall.AddListener(IncrementScore);
-            pin.OnPinFall.AddListener(HandleReset);
-        }  
+        }
     }
 
     private void IncrementScore()
@@ -44,37 +58,16 @@ public class GameManager : MonoBehaviour
 
     private void HandleReset()
     {
-        if (resetRoutine != null)
+        if(pinObjects)
         {
-            StopCoroutine(resetRoutine);
-        }
-        resetRoutine = StartCoroutine(ResetCooldown());
-    }
-    
-    private IEnumerator ResetCooldown()
-    {
-        yield return new WaitForSeconds(resetCooldown);
-        ResetLevel();
-    }
+            foreach (Transform child in pinObjects.transform)
+            {
+                Destroy(child.gameObject);
+            }
 
-    private void ResetLevel()
-    {
-        foreach (Transform child in pinObjects.transform)
-        {
-            Destroy(child.gameObject);
+            Destroy(pinObjects);
         }
-        Destroy(pinObjects);
         ball.ResetBall();
-        SpawnPins();
-    }
-    
-    private void OnDestroy()
-    {
-        foreach (FallTrigger pin in fallTriggers)
-        {
-            pin.OnPinFall.RemoveListener(IncrementScore);
-            pin.OnPinFall.RemoveListener(HandleReset);
-        }
-        ball.OnBallGuttered.RemoveListener(HandleReset);
+        ResetPins();
     }
 }
