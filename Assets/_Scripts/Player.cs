@@ -2,26 +2,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Transform anchor1, anchor2;
+    [SerializeField] private float leftLimit;
+    [SerializeField] private float rightLimit;
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private float speed;
 
-    private float lerpParameter = 0.5f;
+    private Rigidbody rb;
 
     private void Awake()
     {
         inputManager.OnMove.AddListener(OnMove);
+        rb = GetComponent<Rigidbody>();
     }
+
     private void OnMove(Vector2 direction)
     {
-        if (direction == Vector2.right)
-        {
-            lerpParameter += Time.deltaTime;
-        }
-        else if (direction == Vector2.left)
-        {
-            lerpParameter -= Time.deltaTime;
-        }
-        lerpParameter = Mathf.Clamp(lerpParameter, 0, 1);
-        transform.position = Vector3.Lerp(anchor1.position, anchor2.position, lerpParameter);
+        // convert the direction vector's x and y components into a 3d vector
+        // incase our player needs to move forward and backwards later on
+        Vector3 moveDirection = new(direction.x, 0f, direction.y);
+        rb.AddForce(speed * moveDirection);
     }
 }
