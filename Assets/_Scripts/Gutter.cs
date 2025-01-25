@@ -7,7 +7,7 @@ public class Gutter : MonoBehaviour
         if (other.CompareTag("Ball"))
         {
             BallController ball = other.GetComponent<BallController>();
-            if (ball.IsBallLaunched) return;
+            if (!ball.IsBallLaunched) return;
             Rigidbody ballRB = ball.GetComponent<Rigidbody>();
             float velocityMagnitude = ballRB.linearVelocity.magnitude;
             ballRB.linearVelocity = Vector3.zero;
