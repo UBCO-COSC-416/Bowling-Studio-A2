@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float leftLimit;
-    [SerializeField] private float rightLimit;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private float speed;
 
@@ -21,5 +19,6 @@ public class Player : MonoBehaviour
         // incase our player needs to move forward and backwards later on
         Vector3 moveDirection = new(direction.x, 0f, direction.y);
         rb.AddForce(speed * moveDirection);
+
     }
 }
