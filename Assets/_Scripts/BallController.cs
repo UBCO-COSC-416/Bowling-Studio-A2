@@ -12,6 +12,9 @@ public class BallController : MonoBehaviour
     private Transform gutter;
     private InputManager inputManager;
 
+    public bool IsBallLaunched => isBallLaunched;
+
+
     void Start()
     {
         ballRB = GetComponent<Rigidbody>();
