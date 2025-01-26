@@ -42,6 +42,15 @@ public class GameManager : MonoBehaviour
 
     private void SetPins()
     {
+        if(pinObjects)
+        {
+            foreach (Transform child in pinObjects.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            Destroy(pinObjects);
+        }
         pinObjects = Instantiate(pinCollection, pinAnchor.transform.position, Quaternion.identity, transform);
         fallTriggers = FindObjectsByType<FallTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (FallTrigger pin in fallTriggers)
@@ -58,15 +67,6 @@ public class GameManager : MonoBehaviour
 
     private void HandleReset()
     {
-        if(pinObjects)
-        {
-            foreach (Transform child in pinObjects.transform)
-            {
-                Destroy(child.gameObject);
-            }
-
-            Destroy(pinObjects);
-        }
         ball.ResetBall();
         SetPins();
     }
